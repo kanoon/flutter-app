@@ -33,9 +33,10 @@ jobs:
     - name: Deploy to Firebase App Distribution
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        DEMOAPP_ID: ${{ secrets.DEMOAPP_ID }}
       run: |
         flutter build apk # or flutter build ios for iOS apps
         firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
-          --app 1:1045700430760:android:bc13c4911804741023eb9d \
+          --app $DEMOAPP_ID \
           --token $FIREBASE_TOKEN \
           --groups "testers" # or --testers "email1,email2"
