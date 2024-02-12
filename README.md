@@ -1,0 +1,48 @@
+## Simple Flutter Application
+
+Propose: CI-CD Flutter application to Firebase App Distribution.
+Please find more code under `/.github/workflows/main.yml`
+```
+name: Flutter CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: my_flutter_app
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: '3.10.6'
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Run tests
+      run: flutter test
+    
+    # Add your build steps here
+    - name: Install Firebase CLI
+      run: curl -sL https://firebase.tools | bash
+
+    - name: Deploy to Firebase App Distribution
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        DEMOAPP_ID: ${{ secrets.DEMOAPP_ID }}
+      run: |
+        flutter build apk # or flutter build ios for iOS apps
+        firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk \
+          --app $DEMOAPP_ID \
+          --token $FIREBASE_TOKEN \
+          --groups "testers" # or --testers "email1,email2"
+```
