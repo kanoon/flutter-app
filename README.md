@@ -1,6 +1,6 @@
 ## Simple Flutter Application
 
-Propose: CI-CD Flutter application to Firebase App Distribution.
+Propose: CI-CD Flutter application to Firebase App Distribution. <br />
 Please find more code under `/.github/workflows/main.yml`
 ```
 name: Flutter CI/CD
